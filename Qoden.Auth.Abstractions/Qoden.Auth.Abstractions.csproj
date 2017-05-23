@@ -15,7 +15,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
 		<PackageReference Include="Acr.Settings" Version="6.0.0" />
-		<PackageReference Include="Qoden.Util" Version="1.0.0-b5" />
+		<PackageReference Include="Qoden.Util" Version="1.0.0-b1" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Qoden.Auth.Abstractions.csproj" />

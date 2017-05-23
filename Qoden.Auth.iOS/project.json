@@ -1,11 +1,13 @@
 ﻿{
-  "version":"1.0.0",
+  "version": "1.0.0",
   "dependencies": {
+    "Qoden.Auth.Abstractions": "1.0.0-b1",
     "Qoden.Validation": "1.0.0-b*"
   },
   "frameworks": {
-  	"xamarinios10":{
-  	}
+    "xamarinios10": {}
   },
-  "runtimes": { "win": { } }
+  "runtimes": {
+    "win": {}
+  }
 }
