@@ -1,0 +1,11 @@
+﻿{
+  "version":"1.0.0",
+  "dependencies": {
+    "Qoden.Validation": "1.0.0-b*"
+  },
+  "frameworks": {
+  	"xamarinios10":{
+  	}
+  },
+  "runtimes": { "win": { } }
+}
