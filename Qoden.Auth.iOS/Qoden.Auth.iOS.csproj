@@ -9,6 +9,11 @@
     <RootNamespace>Qoden.Auth.iOS</RootNamespace>
     <AssemblyName>Qoden.Auth.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>Qoden.Auth.iOS</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Qoden Technologies</Authors>
+    <Description>iOS components to handle various authentication and authorization scenarios (including OAuth and OpenID)</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

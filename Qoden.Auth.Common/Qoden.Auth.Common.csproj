@@ -1,23 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netstandard1.6</TargetFramework>
+		<TargetFramework>netstandard1.4</TargetFramework>
 		<PackageTargetFallback>portable-net45+win8+wp8+wpa81</PackageTargetFallback>
+		<PackOnBuild>true</PackOnBuild>
+		<PackageId>Qoden.Auth.Common</PackageId>
+		<PackageVersion>1.0.0</PackageVersion>
+		<Authors>Qoden Technologies</Authors>
+		<Description>Common components to handle various authentication and authorization scenarios (including OAuth and OpenID)</Description>
 	</PropertyGroup>
 	<ItemGroup>
 		<Folder Include="src\" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-		<PackageReference Include="Qoden.Validation" Version="1.0.0-b9" />
+		<PackageReference Include="Qoden.Validation" Version="1.0.1" />
 		<PackageReference Include="System.Text.Encodings.Web" Version="4.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
 		<PackageReference Include="Acr.Settings" Version="6.0.0" />
-		<PackageReference Include="Qoden.Util" Version="1.0.0-b1" />
+		<PackageReference Include="Qoden.Util" Version="1.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="Qoden.Auth.Abstractions.csproj" />
+		<None Include="Qoden.Auth.Common.csproj" />
 	</ItemGroup>
 </Project>
