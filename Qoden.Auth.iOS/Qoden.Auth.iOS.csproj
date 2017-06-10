@@ -62,11 +62,20 @@
     <Compile Include="src\SecureStore.cs" />
     <Compile Include="src\ISecureStoreStrategy.cs" />
     <Compile Include="src\DefaultSecureStoreStrategy.cs" />
-    <Compile Include="src\DefaultContext.cs" />
+    <Compile Include="src\Platform.cs" />
     <Compile Include="src\KeychainException.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Qoden.Auth\Qoden.Auth.csproj">
+      <Project>{F8151170-07E6-4471-9D2D-089656E985E6}</Project>
+      <Name>Qoden.Auth</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Qoden.Auth.iOS.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

@@ -1,8 +1,8 @@
 ﻿{
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {    
-    "Qoden.Auth.Common": "1.0.0",
-    "Qoden.Validation": "1.0.0"
+    "Qoden.Auth": "1.1.3",
+    "Qoden.Validation": "1.0.1"
   },
   "frameworks": {
     "xamarinios10": {}

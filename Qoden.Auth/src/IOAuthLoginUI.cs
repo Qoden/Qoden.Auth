@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Qoden.Util;
 
 namespace Qoden.Auth
 {
@@ -13,6 +14,6 @@ namespace Qoden.Auth
         /// </summary>
         /// <returns>OAuth grant code.</returns>
         /// <param name="uri">Login page URI</param>
-        Task<string> GetGrantCode(Uri uri);
+        Task<HttpValueCollection> GetResult(Uri uri);
     }
 }

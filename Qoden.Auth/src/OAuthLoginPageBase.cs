@@ -10,8 +10,8 @@ namespace Qoden.Auth
     /// </summary>
     public abstract class OAuthLoginPageBase : IOAuthLoginUI
     {
-        private SingletonOperation<string> loginOperation;
-        private TaskCompletionSource<string> loginTask;
+        private SingletonOperation<HttpValueCollection> loginOperation;
+        private TaskCompletionSource<HttpValueCollection> loginTask;
         private OAuthConfig config;
         private Uri uri;
 
@@ -19,10 +19,10 @@ namespace Qoden.Auth
         {
             Assert.Argument(config, nameof(config)).NotNull();
             this.config = config;
-            loginOperation = new SingletonOperation<string>(() => OpenLoginPage());
+            loginOperation = new SingletonOperation<HttpValueCollection>(() => OpenLoginPage());
         }
 
-        public Task<string> GetGrantCode(Uri uri)
+        public Task<HttpValueCollection> GetResult(Uri uri)
         {
             Assert.Argument(uri, nameof(uri)).NotNull();
             Assert.State(uri, nameof(uri))
@@ -31,9 +31,9 @@ namespace Qoden.Auth
             return loginOperation.Start();
         }
 
-        private Task<string> OpenLoginPage()
+        private Task<HttpValueCollection> OpenLoginPage()
         {
-            loginTask = new TaskCompletionSource<string>();
+            loginTask = new TaskCompletionSource<HttpValueCollection>();
             OpenLoginPage(uri);
             return loginTask.Task;
         }
@@ -53,13 +53,8 @@ namespace Qoden.Auth
             if (returnUrl.AbsoluteUri.StartsWith(config.ReturnUrl, StringComparison.Ordinal))
             {
                 var query = HttpUtility.ParseQueryString(returnUrl.Query);
-                string code = string.Empty;
-                if (query.ContainsKey("code"))
-                {
-                    code = query["code"];
-                }
                 uri = null;
-                loginTask.SetResult(code);
+                loginTask.SetResult(query);
             }
         }
     }

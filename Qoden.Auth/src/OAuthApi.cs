@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -25,6 +24,7 @@ namespace Qoden.Auth
         public const string ExpiresIn = "expires_in";
         public const string Error = "error";
         public const string ErrorMessage = "error_message";
+        public const string IdToken = "id_token";
 
         private DefaultValue<ILogger> _logger;
 
@@ -40,7 +40,7 @@ namespace Qoden.Auth
             Config = config;
             TokenUrl = tokenUrl;
             AuthUrl = authUrl;
-            _logger = new DefaultValue<ILogger>(() => AuthContext.Default.LoggerFactory.CreateLogger(GetType().Name));            
+            _logger = new DefaultValue<ILogger>(() => Auth.Config.LoggerFactory.CreateLogger(GetType().Name));            
         }
 
         public ILogger Logger 
@@ -259,7 +259,7 @@ namespace Qoden.Auth
                     url.Append('&');
 
                 if (kvs[i].Value != null)
-                    url.Append(kvs[i].Key).Append('=').Append(UrlEncoder.Default.Encode(kvs[i].Value));
+                    url.Append(kvs[i].Key).Append('=').Append(System.Net.WebUtility.UrlEncode(kvs[i].Value));
             }
 
             return new Uri(url.ToString());
