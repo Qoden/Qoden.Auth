@@ -11,7 +11,7 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Qoden.Auth.iOS</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.1.4</PackageVersion>
     <Authors>Qoden Technologies</Authors>
     <Description>iOS components to handle various authentication and authorization scenarios (including OAuth and OpenID)</Description>
   </PropertyGroup>
@@ -64,6 +64,7 @@
     <Compile Include="src\DefaultSecureStoreStrategy.cs" />
     <Compile Include="src\Platform.cs" />
     <Compile Include="src\KeychainException.cs" />
+    <Compile Include="src\EmbeddedSafariLoginPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="project.json" />

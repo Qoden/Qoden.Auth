@@ -19,7 +19,11 @@ namespace Qoden.Auth
             Query = query;
         }
 
-        public OAuthException(Exception ex) : base("OAuth failed due to unexpected error", ex)
+        public OAuthException(Exception ex) : this("OAuth failed due to unexpected error", ex)
+        {
+        }
+
+        public OAuthException(string message, Exception ex) : base(message, ex)
         {
         }
 

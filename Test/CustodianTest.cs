@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Qoden.Util;
 
 namespace Qoden.Auth.Test
 {
@@ -138,6 +135,15 @@ namespace Qoden.Auth.Test
             Assert.AreEqual(1, _tokensRequested);
         }
 
+        [TestMethod]
+        public async Task UserCanceLogin()
+        {
+            var custodian = GrantCodeCustodian();
+            var authTask = custodian.Authenticate();
+            _loginPage.Cancel();
+            await Assert.ThrowsExceptionAsync<OAuthException>(() => authTask);
+        }
+
         private Custodian GrantCodeCustodian()
         {
             _oauthServer.Authorize = AuthorizeGrantCode;
@@ -201,61 +207,6 @@ namespace Qoden.Auth.Test
             {
                 return new FakeSecureSore();
             }
-        }
-
-        public class FakeLoginPage : IOAuthLoginUI
-        {
-            public Uri Uri { get; private set; }
-
-            public async Task<HttpValueCollection> GetResult(Uri uri)
-            {
-                Trace.WriteLine("Open Page " + uri.AbsoluteUri);
-                Uri = uri;
-                var http = new HttpClient(new HttpClientHandler()
-                {
-                    AllowAutoRedirect = false
-                });
-                var response = await http.GetAsync(uri);
-                var location = response.Headers.Location;
-                var query = location.Query;
-                if (query.StartsWith("?", StringComparison.Ordinal)) 
-                    query = query.Substring(1);
-                return new HttpValueCollection(query);
-            }
-        }
-
-        public class FakeSecureSore : ISecureStore
-        {
-            private Dictionary<string, object> _keys = new Dictionary<string, object>();
-
-            public bool Delete(string key)
-            {
-                return _keys.Remove(key);
-            }
-
-            public T Get<T>(string key, T defaultValue)
-            {
-                return (T)_keys.GetValue(key, defaultValue);
-            }
-
-            public bool HasKey(string key)
-            {
-                return _keys.ContainsKey(key);
-            }
-
-            public void Set<T>(string key, T value)
-            {
-                _keys[key] = value;
-            }
-        }
-    }
-
-    public static class HttpResponseJsonExtensions
-    {
-        public static Task WriteJson<T>(this HttpResponse response, T json)
-        {
-            response.ContentType = "application/json";
-            return response.WriteAsync(JsonConvert.SerializeObject(json));
         }
     }
 }

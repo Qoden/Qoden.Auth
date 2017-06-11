@@ -7,16 +7,20 @@ namespace Qoden.Auth.iOS
     /// <summary>
     /// Default iOS OAuth login page which opens login page in Safari
     /// </summary>
-    public class SafariLoginPage : OAuthLoginPageBase 
+    public class SafariLoginPage : OAuthLoginPage 
     {
-        public SafariLoginPage(OAuthConfig config) : base(config)
+        public SafariLoginPage(string returnUri) : base(returnUri)
         {
         }
 
-        protected override void OpenLoginPage(Uri uri)
+        protected override void DisplayLoginPage(Uri uri)
         {
             var nsUrl = new NSUrl(uri.AbsoluteUri);
             UIApplication.SharedApplication.OpenUrl(nsUrl);
+        }
+
+        protected override void HideLoginPage()
+        {
         }
     }
 }

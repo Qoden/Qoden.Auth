@@ -5,15 +5,15 @@ using Qoden.Util;
 namespace Qoden.Auth
 {
     /// <summary>
-    /// Abstracts OAuth login pages used to get grant code.
+    /// OAuth login page.
     /// </summary>
     public interface IOAuthLoginUI
     {
         /// <summary>
-        /// Display login page and get grant code
+        /// Display login page and return server response.
         /// </summary>
-        /// <returns>OAuth grant code.</returns>
+        /// <returns>Data returned by OAuth server.</returns>
         /// <param name="uri">Login page URI</param>
-        Task<HttpValueCollection> GetResult(Uri uri);
+        Task<HttpValueCollection> Display(Uri uri);
     }
 }

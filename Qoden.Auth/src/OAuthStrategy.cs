@@ -43,14 +43,21 @@ namespace Qoden.Auth
 
         public async Task<UserProfile> Authorize()
         {
-            var uri = _api.GetAuthorizationPageUrl(AuthorizationPageQuery);
-            var result = await LoginPage.GetResult(uri);
-            var profile = await OAuthAuthorizeAction(result);
-            if (profile != null)
+            try
             {
-                profile[LastLoggedInKey] = DateTime.UtcNow;
+                var uri = _api.GetAuthorizationPageUrl(AuthorizationPageQuery);
+                var result = await LoginPage.Display(uri);
+                var profile = await OAuthAuthorizeAction(result);
+                if (profile != null)
+                {
+                    profile[LastLoggedInKey] = DateTime.UtcNow;
+                }
+                return profile;
             }
-            return profile;
+            catch (TaskCanceledException e)
+            {
+                throw new OAuthException("Login flow cancelled", e);
+            }
         }
 
         public Task<bool> ProfileExpired(UserProfile savedProfile)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Qoden.Auth.Test
 {
@@ -69,6 +70,15 @@ namespace Qoden.Auth.Test
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+    }
+
+    public static class HttpResponseJsonExtensions
+    {
+        public static Task WriteJson<T>(this HttpResponse response, T json)
+        {
+            response.ContentType = "application/json";
+            return response.WriteAsync(JsonConvert.SerializeObject(json));
         }
     }
 }
