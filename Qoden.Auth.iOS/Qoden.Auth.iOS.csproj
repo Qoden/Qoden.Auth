@@ -11,7 +11,7 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Qoden.Auth.iOS</PackageId>
-    <PackageVersion>1.1.4</PackageVersion>
+    <PackageVersion>1.1.5</PackageVersion>
     <Authors>Qoden Technologies</Authors>
     <Description>iOS components to handle various authentication and authorization scenarios (including OAuth and OpenID)</Description>
   </PropertyGroup>

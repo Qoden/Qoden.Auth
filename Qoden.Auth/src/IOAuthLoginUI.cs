@@ -15,5 +15,12 @@ namespace Qoden.Auth
         /// <returns>Data returned by OAuth server.</returns>
         /// <param name="uri">Login page URI</param>
         Task<HttpValueCollection> Display(Uri uri);
+
+        /// <summary>
+        /// Gets or sets the expected redirect URI prefix. 
+        /// Login page will ignore redirects other than starting from this prefix. 
+        /// Set null to disable redirect uri check.
+        /// </summary>
+        string ExpectedRedirectUriPrefix { get; set; }
     }
 }

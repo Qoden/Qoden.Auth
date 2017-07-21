@@ -9,7 +9,7 @@ namespace Qoden.Auth.iOS
         private SFSafariViewController _controller;
         private UIViewController _root;
 
-        public EmbeddedSafariLoginPage(string returnUri, UIViewController root = null) : base(returnUri)
+        public EmbeddedSafariLoginPage(UIViewController root = null)
         {
             _root = root;
         }

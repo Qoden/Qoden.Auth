@@ -9,10 +9,6 @@ namespace Qoden.Auth.iOS
     /// </summary>
     public class SafariLoginPage : OAuthLoginPage 
     {
-        public SafariLoginPage(string returnUri) : base(returnUri)
-        {
-        }
-
         protected override void DisplayLoginPage(Uri uri)
         {
             var nsUrl = new NSUrl(uri.AbsoluteUri);

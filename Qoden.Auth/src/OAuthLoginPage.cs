@@ -13,20 +13,20 @@ namespace Qoden.Auth
         private TaskCompletionSource<HttpValueCollection> _task;
         private string _returnUri;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Qoden.Auth.OAuthLoginPage"/> class.
-        /// </summary>
-        /// <param name="returnUri">Expected Return URI</param>
-        public OAuthLoginPage(string returnUri)
+        public string ExpectedRedirectUriPrefix
         {
-            Assert.Argument(returnUri, nameof(returnUri)).NotEmpty();
-            _returnUri = returnUri;
+            get { return _returnUri; }
+            set
+            {
+                Assert.State(_task).IsNull("Cannot change return url while login page running");
+                _returnUri = value;
+            }
         }
 
         public Task<HttpValueCollection> Display(Uri uri)
         {
             Assert.Argument(uri, nameof(uri)).NotNull();
-            if (_task != null) 
+            if (_task != null)
             {
                 _task.SetCanceled();
                 HideLoginPage();
@@ -34,7 +34,6 @@ namespace Qoden.Auth
             _task = new TaskCompletionSource<HttpValueCollection>();
             DisplayLoginPage(uri);
             return _task.Task;
-            
         }
 
         protected abstract void DisplayLoginPage(Uri uri);
@@ -43,18 +42,25 @@ namespace Qoden.Auth
         /// <summary>
         /// Notifies login page that system received redirect uri.
         /// </summary>
+        /// <remarks>
+        /// Method does nothing if page is not opened or if provided URL does not match ExpectedRedirectUriPrefix.
+        /// </remarks>
         /// <param name="redirectUri">OAuth redirect uri</param>
-        public void OnOpenUrl(Uri redirectUri)
+        /// <returns>true is page handled redirectUri or false otherwise</returns>
+        public bool OnOpenUrl(Uri redirectUri)
         {
             Assert.Argument(redirectUri, nameof(redirectUri)).NotNull();
 
-            if (_task != null && redirectUri.AbsoluteUri.StartsWith(_returnUri, StringComparison.OrdinalIgnoreCase))
+            if (_task != null && 
+                (ExpectedRedirectUriPrefix == null || redirectUri.AbsoluteUri.StartsWith(ExpectedRedirectUriPrefix, StringComparison.OrdinalIgnoreCase)))
             {
                 var query = HttpUtility.ParseQueryString(redirectUri.Query);
                 _task.SetResult(query);
                 _task = null;
                 HideLoginPage();
+                return true;
             }
+            return false;
         }
 
         /// <summary>
