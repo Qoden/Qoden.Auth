@@ -11,6 +11,7 @@ namespace Qoden.Auth.Test
     {
         private CancellationTokenSource _cancelTokens;
         public Uri Uri { get; private set; }
+        public string ExpectedRedirectUriPrefix { get; set; }
 
         public async Task<HttpValueCollection> Display(Uri uri)
         {
