@@ -27,7 +27,7 @@ namespace Qoden.Auth.Test
                                    new Uri(_oauthServer.BaseUri, "token"),
                                    new Uri(_oauthServer.BaseUri, "authorize"));
             _loginPage = new FakeLoginPage();
-            Platform.Instance = new TestPlatform();
+            AbstractPlatform.Instance = new TestPlatform();
             _tokensRequested = 0;
         }
 
@@ -201,7 +201,7 @@ namespace Qoden.Auth.Test
             return context.Response.WriteAsync("");
         }
 
-        public class TestPlatform : Platform
+        public class TestPlatform : AbstractPlatform
         {
             public override ISecureStore CreateAccountStore()
             {

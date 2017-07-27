@@ -3,7 +3,7 @@ using Qoden.Validation;
 
 namespace Qoden.Auth
 {
-    public abstract class Platform
+    public abstract class AbstractPlatform
     {
         /// <summary>
         /// Crate secure store to be used to store oauth tokens
@@ -11,9 +11,9 @@ namespace Qoden.Auth
         public abstract ISecureStore CreateAccountStore();
 
         private static object mutex = new object();
-        private static volatile Platform defaultContext;
+        private static volatile AbstractPlatform defaultContext;
 
-        public static Platform Instance
+        public static AbstractPlatform Instance
         {
             get
             {
@@ -23,7 +23,7 @@ namespace Qoden.Auth
                     {
                         if (defaultContext == null)
                         {
-                            defaultContext = Util.Plugin.Load<Platform>("Qoden.Auth", "Platform");
+                            defaultContext = Util.Plugin.Load<AbstractPlatform>("Qoden.Auth", "Platform");
                         }
                     }
                 }

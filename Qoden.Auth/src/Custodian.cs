@@ -24,7 +24,7 @@ namespace Qoden.Auth
         public Custodian(IAuthStrategy strategy)
         {
             _strategy = Assert.Argument(strategy, nameof(strategy)).NotNull().Value;
-            _store = Default.Value(() => Platform.Instance.CreateAccountStore());
+            _store = Default.Value(() => AbstractPlatform.Instance.CreateAccountStore());
             _logger = Default.Value(() => Config.LoggerFactory.CreateLogger(GetType().Name));
             _profileKey = "Qoden.Auth.Custodian.Profile";
             _authOperation = new SingletonOperation<UserProfile>(RunFlow);

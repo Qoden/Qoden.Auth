@@ -71,12 +71,13 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Qoden.Auth\Qoden.Auth.csproj">
-      <Project>{F8151170-07E6-4471-9D2D-089656E985E6}</Project>
+      <Project>{3E723D0C-73FA-444F-BE35-321DA3E012F2}</Project>
       <Name>Qoden.Auth</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Qoden.Auth.iOS.csproj" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
