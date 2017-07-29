@@ -24,7 +24,7 @@ namespace Qoden.Auth
             }
         }
 
-        public Task<HttpValueCollection> Display(Uri uri)
+        public async Task<HttpValueCollection> Display(Uri uri)
         {
             Assert.Argument(uri, nameof(uri)).NotNull();
             if (_task != null)
@@ -33,8 +33,28 @@ namespace Qoden.Auth
                 HideLoginPage();
             }
             _task = new TaskCompletionSource<HttpValueCollection>();
+            //This method is likely to be called from main thread and from some 
+            //event handler. Task.Yeld below ensures that this event handler 
+            //finish before displayin any UI.
+            //This is useful in case when such UI cause unwanted side effects
+            //with event handler.
+
+            //For example consider this scenario
+            //1. iOS UIViewController ViewDidLoad
+            //2. Custodian.Authenticate
+            //3. LoginPage.Display(uri)
+
+            //In this case Display(uri) was called directly from ViewDidLoad handler.
+            //Often Display(uri) wants to show some modal dialog over UIViewController.
+            //This fails sine UIViewController still executing ViewDidLoad.
+
+            //To avoid such and similar scenarios LoginPage yields execution 
+            //allowing GUI thread to finish event handler before doing anything 
+            //else with GUI.
+            //(averbin)
+            await Task.Yield();
             DisplayLoginPage(uri);
-            return _task.Task;
+            return await _task.Task;
         }
 
         protected abstract void DisplayLoginPage(Uri uri);
