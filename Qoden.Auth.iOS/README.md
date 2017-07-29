@@ -34,16 +34,26 @@ public class AppDelegate : UIApplicationDelegate
 
     public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
     {
-//Let LoginPage know that user opened OAuth url
-        LoginPage.OnOpenUrl(url);
+//Let Login Page know that user redirected back to application. 
+//This should happen before call to UserActivatedApplication since
+//UserActivatedApplication cancel login flow.
+        LoginPage.UserOpenedUrl(url);
         return true;
     }
 
     public override void OnActivated(UIApplication uiApplication)
     {
-//Let LoginPage know than app activated. If LoginPage.OnOpenUrl was not called before then 
-//this means login flow was cancelled by user.
-        LoginPage.OnAppActivated();
+//Let LoginPage know that login flow has finished.
+//If UserOpenedUrl was not called then this cancels pending login.
+        LoginPage.UserActivatedApplication();
+    }
+
+    public override void OnResignActivation(UIApplication application)
+    {
+//Let LoginPage know than user has left our app. LoginPage maintain internal 
+//flag and does not finish login flow if UserActivatedApplication called before 
+//UserHasLeftApplication
+        LoginPage.UserHasLeftApplication();
     }
 }
 </code>

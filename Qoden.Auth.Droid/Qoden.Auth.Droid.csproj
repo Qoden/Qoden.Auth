@@ -51,18 +51,19 @@
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="README.md" />
+    <None Include="Qoden.Auth.Droid.csproj" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Qoden.Auth\Qoden.Auth.csproj">
-      <Project>{3E723D0C-73FA-444F-BE35-321DA3E012F2}</Project>
-      <Name>Qoden.Auth</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Qoden.Util\Qoden.Util\Qoden.Util.csproj">
       <Project>{E37DFBD3-8C0D-4243-963B-7050EB125B2B}</Project>
       <Name>Qoden.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qoden.Auth\Qoden.Auth.csproj">
+      <Project>{3E723D0C-73FA-444F-BE35-321DA3E012F2}</Project>
+      <Name>Qoden.Auth</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

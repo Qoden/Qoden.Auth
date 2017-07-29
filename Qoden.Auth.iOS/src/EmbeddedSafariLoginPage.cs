@@ -52,7 +52,7 @@ namespace Qoden.Auth.iOS
 
             public override void DidFinish(SFSafariViewController controller)
             {
-                _page.OnAppActivated();
+                _page.UserActivatedApplication();
             }
         }
     }

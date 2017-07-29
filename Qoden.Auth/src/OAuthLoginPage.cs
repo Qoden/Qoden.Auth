@@ -12,6 +12,7 @@ namespace Qoden.Auth
     {
         private TaskCompletionSource<HttpValueCollection> _task;
         private string _returnUri;
+        private bool _hasLeft = false;
 
         public string ExpectedRedirectUriPrefix
         {
@@ -47,7 +48,7 @@ namespace Qoden.Auth
         /// </remarks>
         /// <param name="redirectUri">OAuth redirect uri</param>
         /// <returns>true is page handled redirectUri or false otherwise</returns>
-        public bool OnOpenUrl(Uri redirectUri)
+        public bool UserOpenedUrl(Uri redirectUri)
         {
             Assert.Argument(redirectUri, nameof(redirectUri)).NotNull();
 
@@ -64,16 +65,25 @@ namespace Qoden.Auth
         }
 
         /// <summary>
-        /// Notifies login page that control returned back to application and login process finished 
+        /// Notifies login page that user returned back to application.
         /// </summary>
-        public void OnAppActivated()
+        public virtual void UserActivatedApplication()
         {
-            if (_task != null)
+            if (_task != null && _hasLeft)
             {
                 _task.SetCanceled();
                 _task = null;
                 HideLoginPage();
             }
+            _hasLeft = false;
+        }
+
+        /// <summary>
+        /// Notifies login page that user has left application.
+        /// </summary>
+        public virtual void UserHasLeftApplication()
+        {
+            _hasLeft = true;
         }
     }
 }

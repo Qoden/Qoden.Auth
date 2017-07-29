@@ -65,8 +65,10 @@ public class MainActivity : QodenActivity<MainView>
             try
             {
                 var uri = new Uri(intent.Data.ToString());
-//Call LoginPage.OnOpenUrl to finish pending login process
-                MyApplication.Instance.LoginPage.OnOpenUrl(uri);
+//Let Login Page know that user redirected back to application. 
+//This should happen before call to UserActivatedApplication since
+//UserActivatedApplication cancel login flow.
+                MyApplication.Instance.LoginPage.UserOpenedUrl(uri);
             }
             catch
             {
@@ -78,9 +80,19 @@ public class MainActivity : QodenActivity<MainView>
     protected override void OnResume()
     {
         base.OnResume();
-//Call LoginPage.OnAppActivated to let it know that login flow is finished.
-//If OnOpenUrl was not called then this cancels pending login.
-        MyApplication.Instance.LoginPage.OnAppActivated();
+//Let LoginPage know that login flow has finished.
+//If UserOpenedUrl was not called then this cancels pending login.
+        MyApplication.Instance.LoginPage.UserActivatedApplication();
+    }
+
+//OnStop called when user leaves application to perform login
+    protected override void OnStop()
+    {
+        base.OnStop();
+//Let LoginPage know than user has left our app. LoginPage maintain internal 
+//flag and does not finish login flow if UserActivatedApplication called before 
+//UserHasLeftApplication
+        ProveoApplication.Instance.LoginPage.UserHasLeftApplication();
     }
 }
 </code>

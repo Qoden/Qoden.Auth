@@ -6,6 +6,7 @@ namespace Qoden.Auth
     public class BrowserLoginPage : OAuthLoginPage
     {
         Context _context;
+
         public BrowserLoginPage(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
