@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Qoden.Validation;
 using SafariServices;
 using UIKit;
@@ -23,6 +24,7 @@ namespace Qoden.Auth.iOS
                 if (_controller != null)
                 {
                     var controller = _controller;
+                    var display = _controller.PresentingViewController;
                     _controller = null;
                     controller.DismissViewController(true, ()=>
                     {
@@ -39,21 +41,25 @@ namespace Qoden.Auth.iOS
 
             _controller = new SFSafariViewController(uri, false);
             _controller.Delegate = new LoginPageDelgate(this);
-            UIViewController displayController = _root;
-            if (displayController == null)
+            UIViewController root = _root;
+            if (root == null)
             {
-                displayController = UIApplication.SharedApplication.KeyWindow.RootViewController;
+                root = UIApplication.SharedApplication.KeyWindow.RootViewController;
             }
 
-            if (displayController == null)
+            if (root == null)
             {
                 throw new InvalidOperationException("Cannot display login page - " +
                                                     "no root view controller specified and " +
-                                                    "there is no displated windows or " +
+                                                    "there is no displayed window or " +
                                                     "displayed window does not have root view controller");
             }
 
-            displayController.PresentViewController(_controller, true, null);
+            //Find topmost modal dialog to present login page
+            while (root.PresentedViewController != null && root != root.PresentedViewController && !root.PresentedViewController.IsBeingDismissed)
+                root = root.PresentedViewController;
+
+            root.PresentViewController(_controller, true, null);
         }
 
         class LoginPageDelgate : SFSafariViewControllerDelegate
@@ -65,10 +71,20 @@ namespace Qoden.Auth.iOS
                 _page = page;
             }
 
-            public override void DidFinish(SFSafariViewController controller)
+            public override async void DidFinish(SFSafariViewController controller)
             {
-                _page._controller = null;
-                _page.CancelPendingLogin();
+                var c = _page._controller;
+                //Don't cancel pending login right away. Wait a little bit to 
+                //give Safari a chance to hide itself. Otherwise login error 
+                //handling code might present other modals and they might 
+                //interfere with Safari and result in a broken dialog.
+                await Task.Delay(10);
+                if (c == _page._controller)
+                {
+                    _page._controller?.Dispose();
+                    _page._controller = null;
+                    _page.CancelPendingLogin();
+                }
             }
         }
     }
