@@ -74,6 +74,10 @@
       <Project>{3E723D0C-73FA-444F-BE35-321DA3E012F2}</Project>
       <Name>Qoden.Auth</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Qoden.Validation\Qoden.Validation\Qoden.Validation.csproj">
+      <Project>{2FDBE806-5C80-467B-83C6-AF4707ED7FC6}</Project>
+      <Name>Qoden.Validation</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Qoden.Auth.iOS.csproj" />

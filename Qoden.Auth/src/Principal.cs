@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Qoden.Util;
@@ -12,7 +13,7 @@ namespace Qoden.Auth
     /// <summary>
     /// Custodian check users access rights and performs login or refresh operation as needed.
     /// </summary>
-    public class Custodian
+    public class Principal : INotifyPropertyChanged
     {
         private readonly SingletonOperation<UserProfile> _authOperation;
         private DefaultValue<ILogger> _logger;
@@ -21,7 +22,7 @@ namespace Qoden.Auth
         private bool _force = false;
         private IAuthStrategy _strategy;
 
-        public Custodian(IAuthStrategy strategy)
+        public Principal(IAuthStrategy strategy)
         {
             _strategy = Assert.Argument(strategy, nameof(strategy)).NotNull().Value;
             _store = Default.Value(() => AbstractPlatform.Instance.CreateAccountStore());
@@ -62,6 +63,17 @@ namespace Qoden.Auth
             }
         }
 
+        UserProfile _profile;
+        public UserProfile Info
+        {
+            get { return _profile; }
+            set
+            {
+                _profile = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Info"));
+            }
+        }
+
         public async Task<UserProfile> Authenticate(bool force = false)
         {
             Logger.LogDebug("User authentication started in {force} mode", force ? "Forced" : "Non-Forced");
@@ -83,28 +95,35 @@ namespace Qoden.Auth
                 }
             }
 
-            if (_authOperation.Started)
+            try
             {
-                Logger.LogDebug("Join already running authentication operation");
-                return await _authOperation.Start();
-            }
-            else
-            {
-                try
+                if (_authOperation.Started)
                 {
-                    _force = force;
-                    Logger.LogDebug("Start authentication operation");
+                    Logger.LogDebug("Join already running authentication operation");
                     return await _authOperation.Start();
                 }
-                catch (Exception e)
+                else
                 {
-                    Logger.LogError("Authentication finished with error. {error}", e);
-                    throw;
+                    try
+                    {
+                        _force = force;
+                        Logger.LogDebug("Start authentication operation");
+                        return await _authOperation.Start();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogError("Authentication finished with error. {error}", e);
+                        throw;
+                    }
+                    finally
+                    {
+                        _force = false;
+                    }
                 }
-                finally
-                {
-                    _force = false;
-                }
+            }
+            finally
+            {
+                Logger.LogDebug("Finish authentication operation");
             }
         }
 
@@ -116,7 +135,7 @@ namespace Qoden.Auth
                 var savedProfile = SecureStore.Get<Dictionary<string, object>>(ProfileKey);
                 if (savedProfile != null)
                 {
-                    if (_force ||  await _strategy.ProfileExpired(savedProfile))
+                    if (_force || await _strategy.ProfileExpired(savedProfile))
                     {
                         profile = await _strategy.Refresh(savedProfile);
                     }
@@ -145,24 +164,29 @@ namespace Qoden.Auth
             }
 
             if (profile != null)
-            {                
+            {
                 SecureStore.Set(ProfileKey, profile);
             }
+
+            Info = profile;
+
             return profile;
         }
 
-        public static Custodian OAuthGrantCode(OAuthApi api, IOAuthLoginUI loginPage, Action<OAuthGrantCodeFlow> config = null)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public static Principal OAuthGrantCode(OAuthApi api, IOAuthLoginUI loginPage, Action<OAuthGrantCodeFlow> config = null)
         {
             var flow = new OAuthGrantCodeFlow(api, loginPage);
             config?.Invoke(flow);
-            return new Custodian(flow);
+            return new Principal(flow);
         }
 
-        public static Custodian OAuthClientSide(OAuthApi api, IOAuthLoginUI loginPage, Action<OAuthClientSideFlow> config = null)
+        public static Principal OAuthClientSide(OAuthApi api, IOAuthLoginUI loginPage, Action<OAuthClientSideFlow> config = null)
         {
             var flow = new OAuthClientSideFlow(api, loginPage);
             config?.Invoke(flow);
-            return new Custodian(flow);
+            return new Principal(flow);
         }
     }
 }

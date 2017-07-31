@@ -1,4 +1,5 @@
 ﻿using System;
+using Qoden.Validation;
 using SafariServices;
 using UIKit;
 
@@ -14,11 +15,30 @@ namespace Qoden.Auth.iOS
             _root = root;
         }
 
+        public override bool FinishLogin(Uri redirectUri)
+        {
+            var processed = base.FinishLogin(redirectUri);
+            if (processed)
+            {
+                if (_controller != null)
+                {
+                    var controller = _controller;
+                    _controller = null;
+                    controller.DismissViewController(true, ()=>
+                    {
+                        controller.Dispose();
+                    });
+                }
+            }
+            return processed;
+        }
+
         protected override void DisplayLoginPage(Uri uri)
         {
-            _controller = new SFSafariViewController(uri, false);
-            _controller.Delegate = new SafariDelegate(this);
+            Assert.State(_controller).IsNull("Login page still displaying another page");
 
+            _controller = new SFSafariViewController(uri, false);
+            _controller.Delegate = new LoginPageDelgate(this);
             UIViewController displayController = _root;
             if (displayController == null)
             {
@@ -36,23 +56,19 @@ namespace Qoden.Auth.iOS
             displayController.PresentViewController(_controller, true, null);
         }
 
-        protected override void HideLoginPage()
+        class LoginPageDelgate : SFSafariViewControllerDelegate
         {
-            _controller.DismissViewController(true, null);
-        }
+            EmbeddedSafariLoginPage _page;
 
-        private class SafariDelegate : SFSafariViewControllerDelegate
-        {
-            private EmbeddedSafariLoginPage _page;
-
-            public SafariDelegate(EmbeddedSafariLoginPage page)
+            public LoginPageDelgate(EmbeddedSafariLoginPage page)
             {
                 _page = page;
             }
 
             public override void DidFinish(SFSafariViewController controller)
             {
-                _page.UserActivatedApplication();
+                _page._controller = null;
+                _page.CancelPendingLogin();
             }
         }
     }

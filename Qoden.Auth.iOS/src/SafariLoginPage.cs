@@ -14,9 +14,5 @@ namespace Qoden.Auth.iOS
             var nsUrl = new NSUrl(uri.AbsoluteUri);
             UIApplication.SharedApplication.OpenUrl(nsUrl);
         }
-
-        protected override void HideLoginPage()
-        {
-        }
     }
 }

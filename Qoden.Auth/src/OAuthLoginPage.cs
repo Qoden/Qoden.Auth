@@ -12,7 +12,6 @@ namespace Qoden.Auth
     {
         private TaskCompletionSource<HttpValueCollection> _task;
         private string _returnUri;
-        private bool _hasLeft = false;
 
         public string ExpectedRedirectUriPrefix
         {
@@ -30,7 +29,6 @@ namespace Qoden.Auth
             if (_task != null)
             {
                 _task.SetCanceled();
-                HideLoginPage();
             }
             _task = new TaskCompletionSource<HttpValueCollection>();
             //This method is likely to be called from main thread and from some 
@@ -58,7 +56,6 @@ namespace Qoden.Auth
         }
 
         protected abstract void DisplayLoginPage(Uri uri);
-        protected abstract void HideLoginPage();
 
         /// <summary>
         /// Notifies login page that system received redirect uri.
@@ -68,7 +65,7 @@ namespace Qoden.Auth
         /// </remarks>
         /// <param name="redirectUri">OAuth redirect uri</param>
         /// <returns>true is page handled redirectUri or false otherwise</returns>
-        public bool UserOpenedUrl(Uri redirectUri)
+        public virtual bool FinishLogin(Uri redirectUri)
         {
             Assert.Argument(redirectUri, nameof(redirectUri)).NotNull();
 
@@ -76,9 +73,9 @@ namespace Qoden.Auth
                 (ExpectedRedirectUriPrefix == null || redirectUri.AbsoluteUri.StartsWith(ExpectedRedirectUriPrefix, StringComparison.OrdinalIgnoreCase)))
             {
                 var query = HttpUtility.ParseQueryString(redirectUri.Query);
-                _task.SetResult(query);
+                var task = _task;
                 _task = null;
-                HideLoginPage();
+                task.SetResult(query);
                 return true;
             }
             return false;
@@ -87,23 +84,14 @@ namespace Qoden.Auth
         /// <summary>
         /// Notifies login page that user returned back to application.
         /// </summary>
-        public virtual void UserActivatedApplication()
+        public virtual void CancelPendingLogin()
         {
-            if (_task != null && _hasLeft)
+            if (_task != null)
             {
-                _task.SetCanceled();
+                var task = _task;
                 _task = null;
-                HideLoginPage();
+                task.SetCanceled();
             }
-            _hasLeft = false;
-        }
-
-        /// <summary>
-        /// Notifies login page that user has left application.
-        /// </summary>
-        public virtual void UserHasLeftApplication()
-        {
-            _hasLeft = true;
         }
     }
 }

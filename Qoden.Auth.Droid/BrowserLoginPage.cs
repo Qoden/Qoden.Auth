@@ -17,9 +17,5 @@ namespace Qoden.Auth
             var browserIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse(uri.AbsoluteUri));
             _context.StartActivity(browserIntent);
         }
-
-        protected override void HideLoginPage()
-        {
-        }
     }
 }

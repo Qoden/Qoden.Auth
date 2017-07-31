@@ -39,7 +39,7 @@ namespace Qoden.Auth.Test
         [TestMethod]
         public async Task GrantCodeFlow()
         {
-            Custodian custodian = GrantCodeCustodian();
+            Principal custodian = GrantCodeCustodian();
             var user = await custodian.Authenticate();
 
             Assert.AreEqual("access token 1", user[OAuthApi.AccessToken]);
@@ -62,7 +62,7 @@ namespace Qoden.Auth.Test
         [TestMethod]
         public async Task MultipleAuthRequests()
         {
-            Custodian custodian = IdTokenCustodian();
+            Principal custodian = IdTokenCustodian();
             var a1 = custodian.Authenticate();
             var a2 = custodian.Authenticate();
             await Task.WhenAll(a1, a2);
@@ -144,18 +144,18 @@ namespace Qoden.Auth.Test
             await Assert.ThrowsExceptionAsync<OAuthException>(() => authTask);
         }
 
-        private Custodian GrantCodeCustodian()
+        private Principal GrantCodeCustodian()
         {
             _oauthServer.Authorize = AuthorizeGrantCode;
             _oauthServer.Token = ReplyWithAccessToken;
-            var custodian = new Custodian(new OAuthGrantCodeFlow(_api, _loginPage));
+            var custodian = new Principal(new OAuthGrantCodeFlow(_api, _loginPage));
             return custodian;
         }
 
-        private Custodian IdTokenCustodian()
+        private Principal IdTokenCustodian()
         {
             _oauthServer.Authorize = AuthorizeIdToken;
-            return new Custodian(new OAuthClientSideFlow(_api, _loginPage));
+            return new Principal(new OAuthClientSideFlow(_api, _loginPage));
         }
 
         private Task AuthorizeIdToken(HttpContext context)
