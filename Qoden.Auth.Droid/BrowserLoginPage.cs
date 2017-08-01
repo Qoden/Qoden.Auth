@@ -17,5 +17,25 @@ namespace Qoden.Auth
             var browserIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse(uri.AbsoluteUri));
             _context.StartActivity(browserIntent);
         }
+
+        public bool UserHasLeft { get; private set; }
+
+        public void UserHasLeftApplication()
+        {
+            UserHasLeft = true;
+        }
+
+        public override void CancelPendingLogin()
+        {
+            base.CancelPendingLogin();
+            UserHasLeft = false;
+        }
+
+        public override bool FinishLogin(Uri redirectUri)
+        {
+            var finished = base.FinishLogin(redirectUri);
+            UserHasLeft = false;
+            return finished;
+        }
     }
 }
