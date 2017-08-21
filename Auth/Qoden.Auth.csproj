@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\Common.props" />
+<Project Sdk="Microsoft.NET.Sdk">	
 	<PropertyGroup>
 		<TargetFramework>netstandard1.4</TargetFramework>
 		<PackageTargetFallback>portable-net45+win8+wp8+wpa81</PackageTargetFallback>
@@ -18,5 +17,10 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.4" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />       
+        <PackageReference Include="Qoden.Validation" Version="1.0.5" />
+        <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
 	</ItemGroup>
 </Project>
