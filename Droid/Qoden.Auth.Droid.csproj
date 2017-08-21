@@ -63,7 +63,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Auth\Qoden.Auth.csproj">
-			<Project>{5DE64EA6-8238-4483-B991-3548AFC1F437}</Project>
+			<Project>{14E523EB-B05A-442E-8E58-0DE1764E90C7}</Project>
 			<Name>Qoden.Auth</Name>
 		</ProjectReference>
 	</ItemGroup>

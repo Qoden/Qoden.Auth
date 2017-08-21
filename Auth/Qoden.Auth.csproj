@@ -16,4 +16,7 @@
 	<ItemGroup>
 	  <None Include="Qoden.Auth.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.4" />
+	</ItemGroup>
 </Project>

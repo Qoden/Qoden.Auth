@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
 using Qoden.Util;
 using Qoden.Validation;
@@ -73,6 +75,15 @@ namespace Qoden.Auth
                 if (DateTime.UtcNow > savedAt + TimeSpan.FromSeconds(expirationTimspan))
                 {
                     return Task.FromResult(true);
+                }
+            }
+            else 
+            {
+                var idToken = savedProfile.GetValue(OAuthApi.IdToken) as string;
+                if (idToken != null)
+                {
+                    var jwt = new JwtSecurityToken(idToken);
+                    return Task.FromResult(jwt.ValidTo <= DateTime.Now.ToUniversalTime());
                 }
             }
             return Task.FromResult(false);
