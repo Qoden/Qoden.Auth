@@ -1,0 +1,41 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qoden.Auth.iOS", "iOS\Qoden.Auth.iOS.csproj", "{F4FE7993-CDBC-4E8B-8123-AD43148D16DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qoden.Auth.Test", "Test\Qoden.Auth.Test.csproj", "{F0AF883E-518E-4FE0-8F08-B6F7CF17C48A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qoden.Auth.Droid", "Droid\Qoden.Auth.Droid.csproj", "{6883062D-DCB0-498B-8525-C0E1B0BB5710}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{512005DB-3290-41C0-B410-D3F0E5114F8C}"
+	ProjectSection(SolutionItems) = preProject
+		Qoden.Auth.sln = Qoden.Auth.sln
+		Common.props = Common.props
+	EndProjectSection
+EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Qoden.Auth", "Auth\Qoden.Auth.csproj", "{A56F1291-3B40-46C9-923F-1725F462A15C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4FE7993-CDBC-4E8B-8123-AD43148D16DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4FE7993-CDBC-4E8B-8123-AD43148D16DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4FE7993-CDBC-4E8B-8123-AD43148D16DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FE7993-CDBC-4E8B-8123-AD43148D16DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0AF883E-518E-4FE0-8F08-B6F7CF17C48A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0AF883E-518E-4FE0-8F08-B6F7CF17C48A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0AF883E-518E-4FE0-8F08-B6F7CF17C48A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0AF883E-518E-4FE0-8F08-B6F7CF17C48A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6883062D-DCB0-498B-8525-C0E1B0BB5710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6883062D-DCB0-498B-8525-C0E1B0BB5710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6883062D-DCB0-498B-8525-C0E1B0BB5710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6883062D-DCB0-498B-8525-C0E1B0BB5710}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A56F1291-3B40-46C9-923F-1725F462A15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A56F1291-3B40-46C9-923F-1725F462A15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A56F1291-3B40-46C9-923F-1725F462A15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A56F1291-3B40-46C9-923F-1725F462A15C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

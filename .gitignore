@@ -1,6 +1,5 @@
 *.swp
 *.*~
-project.lock.json
 .DS_Store
 *.pyc
 
@@ -14,19 +13,8 @@ project.lock.json
 *.sln.docstates
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-build/
-bld/
-[Bb]in/
-[Oo]bj/
-msbuild.log
-msbuild.err
-msbuild.wrn
+bin
+obj
 
 # Visual Studio 2015
 .vs/

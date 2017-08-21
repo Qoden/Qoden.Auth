@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\Common.props" />
+	<PropertyGroup>
+		<TargetFramework>netstandard1.4</TargetFramework>
+		<PackageTargetFallback>portable-net45+win8+wp8+wpa81</PackageTargetFallback>
+		<PackOnBuild>true</PackOnBuild>
+		<PackageId>Qoden.Auth</PackageId>		
+		<IncludeSymbols>true</IncludeSymbols>
+		<Authors>Qoden Technologies</Authors>		
+		<Description>Common components to handle various authentication and authorization scenarios (including OAuth and OpenID)</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<Folder Include="src\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Qoden.Auth.csproj" />
+	</ItemGroup>
+</Project>
