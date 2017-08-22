@@ -59,6 +59,7 @@ namespace Qoden.Auth.iOS
             while (root.PresentedViewController != null && root != root.PresentedViewController && !root.PresentedViewController.IsBeingDismissed)
                 root = root.PresentedViewController;
 
+            _controller.ModalPresentationStyle = UIModalPresentationStyle.Popover;
             root.PresentViewController(_controller, true, null);
         }
 
