@@ -8,20 +8,14 @@ namespace Qoden.Auth
     /// </summary>
     public static class Config
     {
-        static Config()
-        {
-            LoggerFactory = new LoggerFactory();
-            LoggerFactory.AddDebug();
-        }
-
-        private static ILoggerFactory loggerFactory;
+        private static ILoggerFactory _loggerFactory;
         /// <summary>
-        /// Auth library logger factory
+        /// Auth library logger factory to be used by various components.
         /// </summary>
         public static ILoggerFactory LoggerFactory
         {
-            get { return loggerFactory; }
-            set { loggerFactory = Assert.Property(value).NotNull().Value; }
+            get => _loggerFactory;
+            set => _loggerFactory = Assert.Property(value).NotNull().Value;
         }
 
     }

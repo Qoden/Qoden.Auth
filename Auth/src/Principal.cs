@@ -16,17 +16,15 @@ namespace Qoden.Auth
     public class Principal : INotifyPropertyChanged
     {
         private readonly SingletonOperation<UserProfile> _authOperation;
-        private DefaultValue<ILogger> _logger;
-        private DefaultValue<ISecureStore> _store;
+        private ILogger _logger;
+        private ISecureStore _store;
         private string _profileKey;
-        private bool _force = false;
-        private IAuthStrategy _strategy;
+        private bool _force;
+        private readonly IAuthStrategy _strategy;
 
         public Principal(IAuthStrategy strategy)
         {
             _strategy = Assert.Argument(strategy, nameof(strategy)).NotNull().Value;
-            _store = Default.Value(() => AbstractPlatform.Instance.CreateAccountStore());
-            _logger = Default.Value(() => Config.LoggerFactory.CreateLogger(GetType().Name));
             _profileKey = "Qoden.Auth.Custodian.Profile";
             _authOperation = new SingletonOperation<UserProfile>(RunFlow);
         }
@@ -36,8 +34,15 @@ namespace Qoden.Auth
         /// </summary>
         public ISecureStore SecureStore
         {
-            get { return _store.Value; }
-            set => _store.Value = value;
+            get
+            {
+                if (_store == null)
+                {
+                    _store = AbstractPlatform.Instance.CreateAccountStore();
+                }
+                return _store;
+            }
+            set => _store = Assert.Property(value).NotNull().Value;
         }
 
         /// <summary>
@@ -45,8 +50,15 @@ namespace Qoden.Auth
         /// </summary>
         public ILogger Logger
         {
-            get { return _logger.Value; }
-            set { _logger.Value = value; }
+            get
+            {
+                if (_logger == null)
+                {
+                    _logger = Config.LoggerFactory?.CreateLogger(typeof(Principal));
+                }
+                return _logger;
+            }
+            set => _logger = Assert.Property(value).NotNull().Value;
         }
 
         /// <summary>
@@ -54,7 +66,7 @@ namespace Qoden.Auth
         /// </summary>
         public string ProfileKey
         {
-            get { return _profileKey; }
+            get => _profileKey;
             set
             {
                 Assert.State(_authOperation.Started, "Started")
@@ -66,7 +78,7 @@ namespace Qoden.Auth
         UserProfile _profile;
         public UserProfile Info
         {
-            get { return _profile; }
+            get => _profile;
             set
             {
                 _profile = value;
@@ -76,7 +88,8 @@ namespace Qoden.Auth
 
         public async Task<UserProfile> Authenticate(bool force = false)
         {
-            Logger.LogDebug("User authentication started in {force} mode", force ? "Forced" : "Non-Forced");
+            if (Logger.IsEnabled(LogLevel.Debug))
+                Logger.LogDebug("User authentication started in {force} mode", force ? "Forced" : "Non-Forced");
             bool isUpgrade = force && !_force && _authOperation.Started;
 
             //if client requested forced login while non-forced login running 

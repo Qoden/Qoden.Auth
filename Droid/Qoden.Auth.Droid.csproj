@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">	
 	<Import Project="..\Build\Mobile.csproj" />
+	<Import Project="..\Common.props" />
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -64,12 +65,11 @@
 		<ProjectReference Include="..\Auth\Qoden.Auth.csproj">
 			<Project>{14E523EB-B05A-442E-8E58-0DE1764E90C7}</Project>
 			<Name>Qoden.Auth</Name>
-		</ProjectReference>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />       
-        <PackageReference Include="Qoden.Validation" Version="1.0.5" />
-        <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+		</ProjectReference>        
+  		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(LoggingVersion)" />
+		<PackageReference Include="Qoden.Validation" Version="$(QodenValidationVersion)" />
+		<PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
+		<PackageReference Include="Qoden.Util" Version="$(QodenUtilVersion)" />
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

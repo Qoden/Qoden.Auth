@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -9,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Qoden.Validation;
-using Qoden.Util;
 
 namespace Qoden.Auth
 {
@@ -26,8 +24,6 @@ namespace Qoden.Auth
         public const string ErrorMessage = "error_message";
         public const string IdToken = "id_token";
 
-        private DefaultValue<ILogger> _logger;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Qoden.Auth.OAuthApi"/> class.
         /// </summary>
@@ -40,14 +36,12 @@ namespace Qoden.Auth
             Config = config;
             TokenUrl = tokenUrl;
             AuthUrl = authUrl;
-            _logger = new DefaultValue<ILogger>(() => Auth.Config.LoggerFactory.CreateLogger(GetType().Name));            
         }
 
-        public ILogger Logger 
-        {
-            get { return _logger.Value; }
-            set { _logger.Value = Assert.Property(value).NotNull().Value; }
-        }
+        /// <summary>
+        /// Optional ILogger instance to log what OAuth API is doing.  
+        /// </summary>
+        public ILogger Logger { get; set; }
 
         /// <summary>
         /// Gets the OAuth config.
@@ -59,7 +53,7 @@ namespace Qoden.Auth
         /// </summary>
         public Uri TokenUrl
         {
-            get { return _tokenUrl; }
+            get => _tokenUrl;
             set
             {
                 Assert.Argument(value, "TokenUrl").NotNull().IsAbsoluteUri();
@@ -72,7 +66,7 @@ namespace Qoden.Auth
         /// </summary>
         public Uri AuthUrl
         {
-            get { return _authUrl; }
+            get => _authUrl;
             set
             {
                 Assert.Argument(value, "AuthUrl").NotNull().IsAbsoluteUri();
@@ -108,6 +102,10 @@ namespace Qoden.Auth
         {
             Assert.Argument(username, "username").NotEmpty();
             Assert.Argument(password, "password").NotNull();
+            
+            if (Logger != null && Logger.IsEnabled(LogLevel.Debug))
+                Logger.LogDebug("LoginWithUsernamePassword {username} {requestParameters}", username, requestParameters);
+            
             AddRequestParameter(ref requestParameters, "username", username);
             AddRequestParameter(ref requestParameters, "password", password);
             AddRequestParameter(ref requestParameters, "grant_type", "password");
@@ -126,6 +124,10 @@ namespace Qoden.Auth
         )
         {
             Assert.State(Config.ClientSecret, "ClientSecret").NotEmpty();
+            
+            if (Logger != null && Logger.IsEnabled(LogLevel.Debug))
+                Logger.LogDebug("LoginWithClientCredentials {requestParameters}", requestParameters);
+            
             AddRequestParameter(ref requestParameters, "grant_type", "client_credentials");
             return await Login(requestParameters, token);
         }
@@ -153,7 +155,11 @@ namespace Qoden.Auth
             CancellationToken token,
             Dictionary<string, string> requestParameters = null)
         {
-            Assert.Argument(grantCode, "grantCode").NotEmpty();            
+            Assert.Argument(grantCode, "grantCode").NotEmpty();    
+            
+            if (Logger != null && Logger.IsEnabled(LogLevel.Debug))
+                Logger.LogDebug("LoginWithGrantCode {requestParameters}", requestParameters);
+            
             AddRequestParameter(ref requestParameters, "code", grantCode);
             AddRequestParameter(ref requestParameters, "grant_type", "authorization_code");
             return await Login(requestParameters, token);
@@ -182,7 +188,11 @@ namespace Qoden.Auth
             CancellationToken token,
             Dictionary<string, string> requestParameters = null)
         {
-            Assert.Argument(refreshToken, "refreshToken").NotEmpty();            
+            Assert.Argument(refreshToken, "refreshToken").NotEmpty();
+            
+            if (Logger != null && Logger.IsEnabled(LogLevel.Debug))
+                Logger.LogDebug("LoginWithRefreshToken {refreshToken} {requestParameters}", refreshToken, requestParameters);
+            
             AddRequestParameter(ref requestParameters, "grant_type", "refresh_token");
             AddRequestParameter(ref requestParameters, "refresh_token", refreshToken);
             return await Login(requestParameters, token);
@@ -205,6 +215,9 @@ namespace Qoden.Auth
             Dictionary<string, string> requestParameters,
             CancellationToken token)
         {
+            if (Logger != null && Logger.IsEnabled(LogLevel.Debug))
+                Logger.LogDebug("Login {requestParameters}", requestParameters);
+            
             AddRequestParameter(ref requestParameters, "client_id", Config.ClientId);
             AddRequestParameter(ref requestParameters, "client_secret", Config.ClientSecret);
             AddRequestParameter(ref requestParameters, "redirect_uri", Config.ReturnUrl);
