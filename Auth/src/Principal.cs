@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Qoden.Util;
@@ -86,7 +87,12 @@ namespace Qoden.Auth
             }
         }
 
-        public async Task<UserProfile> Authenticate(bool force = false)
+        public Task<UserProfile> Authenticate(bool force = false)
+        {
+            return Authenticate(CancellationToken.None, force); 
+        }
+
+        public async Task<UserProfile> Authenticate(CancellationToken token, bool force = false)
         {
             if (Logger.IsEnabled(LogLevel.Debug))
                 Logger.LogDebug("User authentication started in {force} mode", force ? "Forced" : "Non-Forced");
