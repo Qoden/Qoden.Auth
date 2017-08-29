@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Foundation;
 using Qoden.Validation;
 using SafariServices;
 using UIKit;
@@ -7,9 +8,10 @@ using UIKit;
 namespace Qoden.Auth.iOS
 {
     public class EmbeddedSafariLoginPage : OAuthLoginPage
-    {
+    {   
         private SFSafariViewController _controller;
         private UIViewController _root;
+        private UIStatusBarStyle _lastStatusBarStyle;
 
         public EmbeddedSafariLoginPage(UIViewController root = null)
         {
@@ -28,6 +30,7 @@ namespace Qoden.Auth.iOS
                     _controller = null;
                     controller.DismissViewController(true, ()=>
                     {
+                        ResetStatusBarStyle();
                         controller.Dispose();
                     });
                 }
@@ -40,7 +43,10 @@ namespace Qoden.Auth.iOS
             Assert.State(_controller).IsNull("Login page still displaying another page");
 
             _controller = new SFSafariViewController(uri, false);
-            _controller.Delegate = new LoginPageDelgate(this);
+            var loginPageDelegate = new LoginPageDelgate(this);
+            loginPageDelegate.OnFinish = ResetStatusBarStyle;
+            _controller.Delegate = loginPageDelegate;
+           
             UIViewController root = _root;
             if (root == null)
             {
@@ -58,14 +64,22 @@ namespace Qoden.Auth.iOS
             //Find topmost modal dialog to present login page
             while (root.PresentedViewController != null && root != root.PresentedViewController && !root.PresentedViewController.IsBeingDismissed)
                 root = root.PresentedViewController;
-
+            
+            _lastStatusBarStyle = UIApplication.SharedApplication.StatusBarStyle;
             _controller.ModalPresentationStyle = UIModalPresentationStyle.Popover;
             root.PresentViewController(_controller, true, null);
+            UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.Default;
+        }
+
+        void ResetStatusBarStyle()
+        {
+            UIApplication.SharedApplication.StatusBarStyle = _lastStatusBarStyle;
         }
 
         class LoginPageDelgate : SFSafariViewControllerDelegate
         {
             EmbeddedSafariLoginPage _page;
+            public Action OnFinish { get; set; }
 
             public LoginPageDelgate(EmbeddedSafariLoginPage page)
             {
@@ -74,6 +88,8 @@ namespace Qoden.Auth.iOS
 
             public override async void DidFinish(SFSafariViewController controller)
             {
+                OnFinish?.Invoke();
+                
                 var c = _page._controller;
                 //Don't cancel pending login right away. Wait a little bit to 
                 //give Safari a chance to hide itself. Otherwise login error 
