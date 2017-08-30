@@ -84,8 +84,11 @@ namespace Qoden.Auth
             {
                 _profile = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Info"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsAuthorized"));
             }
         }
+
+        public bool IsAuthorized => Info != null;
 
         public Task<UserProfile> Authenticate(bool force = false)
         {
