@@ -1,76 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\Build\Mobile.csproj" />
-  <Import Project="..\Common.props" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6883062D-DCB0-498B-8525-C0E1B0BB5710}</ProjectGuid>
-    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Qoden.Auth</RootNamespace>
-    <AssemblyName>Qoden.Auth.Android</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
-    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
-    <AndroidResgenClass>Resource</AndroidResgenClass>
-    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
-    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;__ANDROID__</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AndroidLinkMode>None</AndroidLinkMode>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <DefineConstants>__ANDROID__</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="Mono.Android" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BrowserLoginPage.cs" />
-    <Compile Include="SecureStore.cs" />
-    <Compile Include="Platform.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="README.md" />
-    <None Include="Qoden.Auth.Droid.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Auth\Qoden.Auth.csproj">
-      <Project>{14E523EB-B05A-442E-8E58-0DE1764E90C7}</Project>
-      <Name>Qoden.Auth</Name>
-    </ProjectReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(LoggingVersion)" />
-    <PackageReference Include="Qoden.Validation" Version="$(QodenValidationVersion)" />
-    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
-    <PackageReference Include="Qoden.Util" Version="$(QodenUtilVersion)" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+    <Import Project="..\Build\Mobile.csproj" />
+    <Import Project="..\Common.props" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{6883062D-DCB0-498B-8525-C0E1B0BB5710}</ProjectGuid>
+        <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <OutputType>Library</OutputType>
+        <RootNamespace>Qoden.Auth</RootNamespace>
+        <AssemblyName>Qoden.Auth.Android</AssemblyName>
+        <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+        <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+        <AndroidResgenClass>Resource</AndroidResgenClass>
+        <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+        <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+        <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug</OutputPath>
+        <DefineConstants>DEBUG;__ANDROID__</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AndroidLinkMode>None</AndroidLinkMode>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release</OutputPath>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AndroidManagedSymbols>true</AndroidManagedSymbols>
+        <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+        <DefineConstants>__ANDROID__</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Core" />
+        <Reference Include="Mono.Android" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.IO.Compression" />
+        <Reference Include="System.Net.Http" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Resources\Resource.designer.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="BrowserLoginPage.cs" />
+        <Compile Include="SecureStore.cs" />
+        <Compile Include="Platform.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Resources\AboutResources.txt" />
+        <None Include="README.md" />
+        <None Include="Qoden.Auth.Droid.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <AndroidResource Include="Resources\values\Strings.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Auth\Qoden.Auth.csproj">
+            <Project>{14E523EB-B05A-442E-8E58-0DE1764E90C7}</Project>
+            <Name>Qoden.Auth</Name>
+        </ProjectReference>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(LoggingVersion)" />
+        <PackageReference Include="Qoden.Validation" Version="$(QodenValidationVersion)" />
+        <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
+        <PackageReference Include="Qoden.Util" Version="$(QodenUtilVersion)" />
+    </ItemGroup>
+    <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
